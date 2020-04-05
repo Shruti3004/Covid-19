@@ -8,24 +8,25 @@ const dSRecovered = document.querySelector("#stateR");
 const dSDeceased = document.querySelector("#stateD");
 getData().then(data => {
   console.log(data);
-  if (data.key_values[0].confirmeddelta > 0) {
-    dSConfirmed.textContent = `(+${data.key_values[0].confirmeddelta})`;
-    dSRecovered.textContent = `(+${data.key_values[0].recovereddelta})`;
-    dSDeceased.textContent = `(+${data.key_values[0].deceaseddelta})`;
+  if (JSON.parse(data.statewise[0].deltaconfirmed) > 0) {
+    dSConfirmed.textContent = `(+${data.statewise[0].deltaconfirmed})`;
+    dSRecovered.textContent = `(+${data.statewise[0].deltarecovered})`;
+    dSDeceased.textContent = `(+${data.statewise[0].deltadeaths})`;
   }
-  stime.textContent = data.key_values[0].lastupdatedtime;
-  data.statewise.forEach((element, index) => {
-    stateTemplate(element, index);
+  stime.textContent = data.statewise[0].lastupdatedtime;
+  data.statewise.forEach(element => {
+    stateTemplate(element);
   });
 });
 const html = "";
 const stateTemplate = state => {
   const html = `<tr>
-  <td id="name">${state.state}</td>
+  <td id="name">${state.state} <span class="showing" id="tc">+(${state.deltaconfirmed})</span></td>
   <td>${state.confirmed}</td>
   <td>${state.recovered}</td>
   <td>${state.deaths}</td>
 </tr>`;
+
   sbody.innerHTML += html;
 };
 const chtml = "";
